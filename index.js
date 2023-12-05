@@ -19,6 +19,18 @@ app.use(express.json())
 
 //rotas
 
+app.get('/limpartarefas', (requisicao, resposta) => {
+    const sql = 'DELETE FROM tarefas'
+
+    conexao.query(sql, (erro) => {
+        if(erro){
+            console.log(erro)
+        }
+
+        resposta.redirect('/')
+    })
+})
+
 app.post('/excluir', (requisicao, resposta) => {
     const id = requisicao.body.id
 
@@ -90,19 +102,19 @@ app.post('/criar', (requisicao, resposta) => {
 
         resposta.redirect('/')
     })
+})
 
-    app.get('/completas', (requisicao, resposta) => {
-        const sql = `
-        SELECT * FROM tarefas
-        WHERE completa = 1
+app.get('/completas', (requisicao, resposta) => {
+    const sql = `
+    SELECT * FROM tarefas
+    WHERE completa = 1
         `
+    conexao.query(sql, (erro, dados) => {
+        if (erro){
+            return console.log(erro)
+        }
 
-        conexao.query(sql, (erro, dados) => {
-            if (erro){
-                return console.log(erro)
-            }
-
-            const tarefas = dados.map((dado) => {
+        const tarefas = dados.map((dado) => {
                 return {
                     id: dado.id,
                     descricao: dado.descricao,
@@ -143,7 +155,7 @@ app.post('/criar', (requisicao, resposta) => {
 
 
     
-})
+
 
 app.get( '/',(requisicao, resposta )  =>  {
     const sql = ' SELECT * FROM tarefas'
@@ -190,5 +202,4 @@ conexao.connect((erro) => {
     app.listen(3000, () => {
         console.log("Servidor rodando na porta 3000")
     })
-
 })
