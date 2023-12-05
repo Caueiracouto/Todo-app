@@ -16,10 +16,23 @@ function descompletarTarefa(id) {
         headers:{
             'Content-Type': 'application/json'
         },
+    
         body: JSON.stringify({ id })
     })
 
     window.location.reload()
+}
+
+function excluirTarefa(id) {
+    fetch("http://localhost:3000/excluir", {
+        method:"POST",
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        
+        body: JSON.stringify({ id })
+    })
+
 }
 
 
